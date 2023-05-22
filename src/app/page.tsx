@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import stud from "./assets/sub.png";
+import upload from "./assets/upload.png";
 
 interface Color {
   r: number;
@@ -176,10 +177,12 @@ export default function Home() {
   return (
     <div className={styles.app}>
       <img
-        src={`${backgroundImage}`}
+        src={backgroundImage ? `${backgroundImage}` : upload.src}
         id="image"
         className={styles.uploadImage}
-        alt="bg"
+        alt={upload.src}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
       />
       <div
         className={styles.main}
