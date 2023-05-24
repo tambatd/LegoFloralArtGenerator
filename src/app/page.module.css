@@ -1,6 +1,8 @@
 .main {
-  height: 575px;
-  width: 384px;
+  min-height: 575px;
+  min-width: 384px;
+  max-height: 575px;
+  max-width: 384px;
   background-color: antiquewhite;
   display: flex;
   flex-direction: row;

@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 //@ts-nocheck
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./page.module.css";
 import stud from "./assets/sub.png";
 import upload from "./assets/upload.png";
+import intro from "./assets/intro.svg";
 
 interface Color {
   r: number;
@@ -107,8 +108,6 @@ export default function Home() {
 
     context.drawImage(image, 0, 0, width, height);
 
-    let ImageDataInfo = [[], [], []];
-
     // Get the image data for the 12x12 pixel area at (0, 0)
     let idValue = 0;
     for (let index = 0; index < height; index += 12) {
@@ -130,17 +129,9 @@ export default function Home() {
         const averageGreen = Math.round(totalGreen / pixelCount);
         const averageBlue = Math.round(totalBlue / pixelCount);
 
-        console.log(
-          "Average Color (R, G, B):",
-          averageRed,
-          averageGreen,
-          averageBlue
-        );
         let chosenColor = { r: averageRed, g: averageGreen, b: averageBlue };
         const closestMatch = findClosestColor(chosenColor, colorArray);
 
-        console.log("Closest match:", closestMatch);
-        console.log(idValue);
         var divElement = document.getElementById(idValue.toString());
         divElement.style.setProperty(
           "background-color",
@@ -151,11 +142,8 @@ export default function Home() {
         idValue += 1;
       }
     }
-    // Calculate the average color values for each channel (R, G, B)
-  };
 
-  const handleStateChange = (newValue) => {
-    setMyState(newValue);
+    // Calculate the average color values for each channel (R, G, B)
   };
 
   const handleDrop = (event) => {
@@ -166,7 +154,9 @@ export default function Home() {
     reader.onload = () => {
       const imageUrl = reader.result;
       setBackgroundImage(imageUrl);
-      onImageUploaded();
+      setTimeout(function () {
+        onImageUploaded();
+      }, 1);
     };
 
     reader.readAsDataURL(file);
@@ -179,13 +169,14 @@ export default function Home() {
   return (
     <div className={styles.app}>
       <img
-        src={backgroundImage ? `${backgroundImage}` : upload.src}
+        src={backgroundImage ? `${backgroundImage}` : intro.src}
         id="image"
         className={styles.uploadImage}
         alt={upload.src}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       />
+
       <div
         className={styles.main}
         onDrop={handleDrop}
