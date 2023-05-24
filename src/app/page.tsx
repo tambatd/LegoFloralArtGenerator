@@ -44,6 +44,8 @@ const RepeatDiv = () => {
 export default function Home() {
   const [backgroundImage, setBackgroundImage] = useState("");
 
+  const [lines, setLines] = useState(true);
+
   function rgbToLab(color: Color): number[] {
     let { r, g, b } = color;
     r /= 255;
@@ -167,26 +169,34 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.app}>
-      <img
-        src={backgroundImage ? `${backgroundImage}` : intro.src}
-        id="image"
-        className={styles.uploadImage}
-        alt={upload.src}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      />
-
-      <div
-        className={styles.main}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        src={`${backgroundImage}`}
-        style={{
-          background: `url(${backgroundImage}) center/cover no-repeat`,
-        }}
-      >
-        <RepeatDiv />
+    <div>
+      <div className={styles.app}>
+        <img
+          src={backgroundImage ? `${backgroundImage}` : intro.src}
+          id="image"
+          className={styles.uploadImage}
+          alt={upload.src}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        />
+        <div className={lines ? styles.vertical : styles.none}>
+          <div
+            className={styles.main}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            src={`${backgroundImage}`}
+            style={{
+              background: `url(${backgroundImage}) center/cover no-repeat`,
+            }}
+          >
+            <RepeatDiv />
+          </div>
+        </div>
+      </div>
+      <div className={styles.buttons}>
+        <button onClick={() => setLines(!lines)} className={styles.button}>
+          {lines ? "Disable" : "Enable"} Lines
+        </button>
       </div>
     </div>
   );

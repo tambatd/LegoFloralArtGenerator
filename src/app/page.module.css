@@ -13,6 +13,51 @@
   border: black 1px solid;
 }
 
+.line {
+  position: relative;
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: white;
+}
+
+.vertical {
+  position: relative;
+}
+
+.vertical::before,
+.vertical::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: white;
+}
+
+.vertical::before {
+  top: 33.33%;
+}
+
+.vertical::after {
+  top: 66.66%;
+}
+
+.vertical::before.vertical-line {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vertical::after.vertical-line {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .app {
   margin: 0;
   display: flex;
@@ -33,4 +78,26 @@
 .uploadImage {
   height: 575px;
   width: 384px;
+}
+
+.buttons {
+  width: 100vw;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  bottom: 10%;
+}
+
+.button {
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: dashed 2px;
+}
+
+.button:hover {
+  cursor: pointer;
 }
