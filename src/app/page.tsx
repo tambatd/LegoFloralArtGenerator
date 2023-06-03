@@ -4,14 +4,8 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 import stud from "./assets/sub.png";
-import upload from "./assets/upload.png";
 import intro from "./assets/intro.svg";
-
-interface Color {
-  r: number;
-  g: number;
-  b: number;
-}
+import { findClosestColor, Color } from "./functions/functions";
 
 const colorArray: Color[] = [
   { r: 245, g: 244, b: 246 },
@@ -22,10 +16,10 @@ const colorArray: Color[] = [
   { r: 67, g: 140, b: 139 },
   { r: 45, g: 76, b: 162 },
   { r: 24, g: 42, b: 80 },
-]; // Array of colors to compare against
+];
+
 const RepeatDiv = () => {
   const divCount = 1536; // Number of times to repeat the div
-  //48
   const renderDivs = () => {
     return Array.from({ length: divCount }).map((_, index) => (
       <div
@@ -45,57 +39,6 @@ export default function Home() {
   const [backgroundImage, setBackgroundImage] = useState("");
 
   const [lines, setLines] = useState(true);
-
-  function rgbToLab(color: Color): number[] {
-    let { r, g, b } = color;
-    r /= 255;
-    g /= 255;
-    b /= 255;
-
-    const x = 0.4124564 * r + 0.3575761 * g + 0.1804375 * b;
-    const y = 0.2126729 * r + 0.7151522 * g + 0.072175 * b;
-    const z = 0.0193339 * r + 0.119192 * g + 0.9503041 * b;
-
-    let fx = x > 0.008856 ? Math.pow(x, 1 / 3) : (903.3 * x + 16) / 116;
-    let fy = y > 0.008856 ? Math.pow(y, 1 / 3) : (903.3 * y + 16) / 116;
-    let fz = z > 0.008856 ? Math.pow(z, 1 / 3) : (903.3 * z + 16) / 116;
-
-    const l = Math.max(0, 116 * fy - 16);
-    const a = 500 * (fx - fy);
-    const b1 = 200 * (fy - fz);
-
-    return [l, a, b1];
-  }
-
-  function calculateDistance(color1: Color, color2: Color): number {
-    const lab1 = rgbToLab(color1);
-    const lab2 = rgbToLab(color2);
-
-    const deltaL = lab2[0] - lab1[0];
-    const deltaA = lab2[1] - lab1[1];
-    const deltaB = lab2[2] - lab1[2];
-
-    const distance = Math.sqrt(deltaL ** 2 + deltaA ** 2 + deltaB ** 2);
-    return distance;
-  }
-
-  function findClosestColor(
-    targetColor: Color,
-    colorArray: Color[]
-  ): Color | null {
-    let closestColor: Color | null = null;
-    let minDistance: number = Infinity;
-
-    for (const color of colorArray) {
-      const distance = calculateDistance(targetColor, color);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestColor = color;
-      }
-    }
-
-    return closestColor;
-  }
 
   const onImageUploaded = () => {
     const image = document.getElementById("image");
@@ -144,8 +87,6 @@ export default function Home() {
         idValue += 1;
       }
     }
-
-    // Calculate the average color values for each channel (R, G, B)
   };
 
   const handleDrop = (event) => {
@@ -174,8 +115,8 @@ export default function Home() {
         <img
           src={backgroundImage ? `${backgroundImage}` : intro.src}
           id="image"
+          alt="uploadDiv"
           className={styles.uploadImage}
-          alt={upload.src}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
         />
